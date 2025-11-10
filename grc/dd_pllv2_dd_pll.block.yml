@@ -1,0 +1,96 @@
+id: dd_pllv2_dd_pll
+label: Decision Directed PLL (v2)
+category: '[dd_pllv2]'
+
+templates:
+  imports: from gnuradio import dd_pllv2
+  make: dd_pllv2.dd_pll(${bw}, ${damp}, ${constellation}, ${min_freq}, ${max_freq})
+
+parameters:
+- id: bw
+  label: Loop bandwidth (bw)
+  dtype: float
+  default: 0.0628
+- id: damp
+  label: Damping (damp)
+  dtype: float
+  default: 1.0
+- id: constellation
+  label: Constellation
+  dtype: raw
+  default: digital.constellation_bpsk()
+- id: min_freq
+  label: Min freq
+  dtype: float
+  default: -1.0
+- id: max_freq
+  label: Max freq
+  dtype: float
+  default: 1.0
+
+inputs:
+- label: in0
+  domain: stream
+  dtype: complex
+outputs:
+- label: out0
+  domain: stream
+  dtype: complex
+- label: errors
+  domain: stream
+  dtype: float
+- label: freqs
+  domain: stream
+  dtype: float
+
+documentation: |-
+  Decision Directed PLL v2 (Phase-Locked Loop)
+  -----------------------------------------
+  (Now in C++ as an OOT!)
+  A decision-directed carrier recovery loop that compensates for carrier
+  phase and frequency offsets in a digitally modulated signal. The PLL
+  uses symbol decisions (based on the provided constellation) to correct
+  the carrier rotation, enabling coherent demodulation.
+
+  Parameters
+  ----------
+  bw : float, optional
+      Loop bandwidth in radians per sample. Controls how fast the PLL
+      responds to phase/frequency errors. Higher values track faster but
+      can be noisier. Typical values: 0.001–0.1.
+      (Default: 2*pi/100 ≈ 0.0628)
+
+  damp : float, optional
+      Loop damping factor. Determines loop stability and transient
+      response. A value of 1.0 corresponds to critical damping.
+      (Default: 1.0)
+
+  constellation : digital.constellation, optional
+      Decision-directed constellation object used for symbol slicing.
+      Common examples:
+          - digital.constellation_bpsk()
+          - digital.constellation_qpsk()
+          - digital.constellation_qam()
+      (Default: BPSK)
+
+  min_freq : float, optional
+      Minimum frequency correction limit (radians/sample).
+      Defines the lowest frequency offset the PLL can correct.
+      (Default: -1.0)
+
+  max_freq : float, optional
+      Maximum frequency correction limit (radians/sample).
+      Defines the highest frequency offset the PLL can correct.
+      (Default: +1.0)
+
+  Notes
+  -----
+  - The PLL’s internal Numerically Controlled Oscillator (NCO)
+    is constrained between `min_freq` and `max_freq`.
+  - If the true carrier offset exceeds this range, the loop
+    may fail to acquire lock.
+  - To choose limits appropriately, convert expected offset in Hz to
+    radians/sample:
+        freq_range = 2 * pi * (expected_offset_Hz / sample_rate_Hz)
+
+file_format: 1

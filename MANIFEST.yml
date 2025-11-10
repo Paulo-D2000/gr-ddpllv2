@@ -1,0 +1,37 @@
+title: Decision-Directed PLL (DD_PLLv2)
+version: 1.0.0
+brief: Carrier recovery loop with decision-directed phase error for digital constellations
+tags:
+  - sdr
+  - pll
+  - synchronization
+  - digital
+  - demodulation
+  - carrier-recovery
+
+author:
+  - Paulo Dutra <mcpauloh@gmail.com>
+copyright_owner:
+  - Paulo Dutra - PU4THZ
+license: GPL-3.0-or-later
+
+gr_supported_version:
+  - 3.10
+  - 3.11
+
+repo: https://github.com/Paulo-D2000/gr-ddpllv2
+website: https://github.com/Paulo-D2000/gr-ddpllv2
+
+description: |-
+  The **Decision-Directed PLL (DD_PLLv2)** module provides a flexible
+  carrier-recovery loop that can lock to a variety of digital constellations
+  (BPSK, QPSK, QAM, etc.). It uses the GNU Radio `digital.constellation`
+  classes internally, ensuring compatibility with existing modulation schemes.
+
+  Features:
+    * Loop bandwidth and damping configurable at runtime
+    * Frequency limits and phase wrapping
+    * Multiple output streams (corrected signal, phase error, frequency)
+    * Compatible with GNU Radio 3.10 + and Radioconda environments
+
+file_format: 1
